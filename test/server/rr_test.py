@@ -22,5 +22,5 @@ def test_object_list():
     obj_ids = client.request('vget /objects').split(' ')
 
     for obj_id in obj_ids:
-        color = client.request('vget /object/%s/color' % obj_id)
+        color = client.request(f'vget /object/{obj_id}/color')
         print(color)

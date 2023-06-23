@@ -8,7 +8,7 @@ sys.path.insert(0, doc_dir)
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 if on_rtd:
     # If runs on ReadTheDocs environment
-    print('Fetching files with git_lfs for %s' % project_dir)
+    print(f'Fetching files with git_lfs for {project_dir}')
     # Hack for lacking git-lfs support ReadTheDocs
     import git_lfs
     git_lfs.fetch(project_dir)
@@ -61,8 +61,7 @@ def parse_unrealcv_version(unrealcv_folder):
     plugin_descriptor = os.path.join(unrealcv_folder, 'UnrealCV.uplugin')
     with open(plugin_descriptor) as f:
         description = json.load(f)
-    plugin_version = description['VersionName']
-    return plugin_version
+    return description['VersionName']
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

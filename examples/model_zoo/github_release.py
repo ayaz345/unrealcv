@@ -17,7 +17,7 @@ def main():
         return
 
     plugin_version = get_plugin_version(abs_descriptor_file)
-    zip_filename = 'unrealcv_%s_%s.zip' % (platform_name, plugin_version)
+    zip_filename = f'unrealcv_{platform_name}_{plugin_version}.zip'
 
     output_folder = 'Plugins/UnrealCV'
     abs_output_folder = os.path.abspath(output_folder)
@@ -30,7 +30,7 @@ def main():
 def zip_dir(dirpath, zippath):
     # fzip = zipfile.ZipFile(zippath, 'w', zipfile.ZIP_DEFLATED, allowZip64 = True)
     fzip = zipfile.ZipFile(zippath, 'w', zipfile.ZIP_STORED, allowZip64 = True)
-    basedir = os.path.dirname(dirpath) + '/'
+    basedir = f'{os.path.dirname(dirpath)}/'
     for root, dirs, files in os.walk(dirpath):
         if os.path.basename(root)[0] == '.':
             continue #skip hidden directories
@@ -39,7 +39,7 @@ def zip_dir(dirpath, zippath):
             # if f[-1] == '~' or (f[0] == '.' and f != '.htaccess'):
             #     #skip backup files and all hidden files except .htaccess
             #     continue
-            fzip.write(root + '/' + f, dirname + '/' + f)
+            fzip.write(f'{root}/{f}', f'{dirname}/{f}')
     fzip.close()
 
 if __name__ == '__main__':

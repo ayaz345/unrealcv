@@ -22,7 +22,7 @@ def read_png(res):
         PIL_img = PIL.Image.open(BytesIO(res))
         img = np.asarray(PIL_img)
     except:
-        print('Read png can not parse response %s' % str(res[:20]))
+        print(f'Read png can not parse response {str(res[:20])}')
     return img
 
 def read_npy(res):
@@ -44,5 +44,5 @@ def read_npy(res):
     try:
         arr = np.load(BytesIO(res))
     except:
-        print('Read npy can not parse response %s' % str(res[:20]))
+        print(f'Read npy can not parse response {str(res[:20])}')
     return arr

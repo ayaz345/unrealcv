@@ -19,8 +19,7 @@ logging.getLogger('dev_server').setLevel(logging.DEBUG)
 
 def random_payload():
     len = random.randrange(1024)
-    random_str = ''.join([chr(random.randrange(100)) for v in range(len)])
-    return random_str
+    return ''.join([chr(random.randrange(100)) for _ in range(len)])
 
 localhost = 'localhost'
 echo_port = 9010
@@ -60,7 +59,7 @@ def test_multi_connection(server):
     assert client.isconnected() == True
     response = client.request('hi')
     assert response == 'hi'
-    for i in range(10):
+    for _ in range(10):
         _client = unrealcv.Client((localhost, echo_port))
         _client.connect(0.1)
         # print client.connect()
@@ -96,8 +95,9 @@ def test_client_release(server):
             'Client is not successfully disconnected in trial %d' % i
         # Make sure the server can detect client connection also
         time.sleep(0.5) # Wait for the server to detect the disconnection
-        assert server.get_client_socket() == None, \
-            'Server can not detect client disconnect event.'
+        assert (
+            server.get_client_socket() is None
+        ), 'Server can not detect client disconnect event.'
         logger.info('Trial %d is finished.' % i)
     # server.shutdown()
 
@@ -112,17 +112,17 @@ def test_random_operation(server):
     for i in range(num_random_trial):
         msg = 'Trial %d' % i
         choice = random.randrange(2)
-        if choice == 1:
-            client.connect()
-            assert client.isconnected() == True, msg
-        elif choice == 0:
+        if choice == 0:
             client.disconnect()
             assert client.isconnected() == False, msg
 
-    for i in range(3):
+        elif choice == 1:
+            client.connect()
+            assert client.isconnected() == True, msg
+    for _ in range(3):
         client.connect()
         assert client.isconnected() == True
-    for i in range(3):
+    for _ in range(3):
         client.disconnect()
         assert client.isconnected() == False
     # server.shutdown()
@@ -139,7 +139,7 @@ def test_request_timeout():
     client.connect()
     assert client.isconnected() == True
     response = client.request('hi', timeout = 1)
-    assert response == None
+    assert response is None
 
 def test_no_server():
     ''' What if server is not started yet? '''
@@ -151,7 +151,7 @@ def test_no_server():
     cmds = ['hi', 'hello']
     for cmd in cmds:
         res = client.request(cmd)
-        assert res == None
+        assert res is None
 
 def test_server_shutdown():
     ''' Close on the server side and check whether client can detect it '''
@@ -170,10 +170,10 @@ def test_message_handler(server):
     client = unrealcv.Client((localhost, echo_port))
 
     def handle_message(msg):
-        print('Got server message %s' % repr(msg))
+        print(f'Got server message {repr(msg)}')
         res = unrealcv.client.request('ok', 1)
         assert res == 'ok'
-        print('Server response %s' % res)
+        print(f'Server response {res}')
 
     client.connect()
     assert client.isconnected() == True

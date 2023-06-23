@@ -11,5 +11,5 @@ def test_object_list():
     assert checker.not_error(res)
 
     for obj_id in obj_ids:
-        color = client.request('vget /object/%s/color' % obj_id)
+        color = client.request(f'vget /object/{obj_id}/color')
         assert checker.not_error(color)

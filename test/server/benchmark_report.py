@@ -45,8 +45,8 @@ def run_duration(cmd, duration):
             count = i
             break
 
-        res = client.request(cmd)
         if i == 0:
+            res = client.request(cmd)
             sample_output = res
 
     msg = 'Run %s for %0.2f seconds, count = %d, %d FPS' \
@@ -70,35 +70,33 @@ def main():
     try:
         data = json.load(open(json_task))
     except Exception as e:
-        print('Failed to parse task file %s' % json_task)
+        print(f'Failed to parse task file {json_task}')
         print(e)
         return
     tasks = data.get('Tasks')
 
-    report_file = open(report_filename, 'w')
-    log(sys_info())
+    with open(report_filename, 'w') as report_file:
+        log(sys_info())
 
-    client.connect()
-    for task in tasks:
-        task_text = str(task)
-        if task.get('Cmd') == None or task.get('Skip') == True:
-            continue
+        client.connect()
+        for task in tasks:
+            task_text = str(task)
+            if task.get('Cmd') is None or task.get('Skip') == True:
+                continue
 
-        if task.get('Duration'):
-            duration = task.get('Duration')
-            task_result, sample_output = run_duration(task['Cmd'], duration)
+            if task.get('Duration'):
+                duration = task.get('Duration')
+                task_result, sample_output = run_duration(task['Cmd'], duration)
 
-        if task.get('Count'):
-            count = task.get('Count')
-            task_result, sample_output = run_count(task['Cmd'], count)
+            if task.get('Count'):
+                count = task.get('Count')
+                task_result, sample_output = run_count(task['Cmd'], count)
 
-        sample_output = sample_output.split('\n')[0][:256]
-        log(task_text)
-        log(task_result)
-        log(sample_output)
-        log('-' * 80)
-
-    report_file.close()
+            sample_output = sample_output.split('\n')[0][:256]
+            log(task_text)
+            log(task_result)
+            log(sample_output)
+            log('-' * 80)
 
 if __name__ == '__main__':
     main()

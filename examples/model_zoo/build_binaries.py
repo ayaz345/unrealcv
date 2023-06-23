@@ -37,30 +37,30 @@ for uproject_path in win_uprojects:
     uproject_name = os.path.basename(uproject_path).split('.')[0]
     uprojects.append(
         dict(
-            uproject_path = uproject_path,
-            ue4_path = ue4_win,
-            log_file = 'log/win_%s.log' % uproject_name
-        ),
+            uproject_path=uproject_path,
+            ue4_path=ue4_win,
+            log_file=f'log/win_{uproject_name}.log',
+        )
     )
 
 for uproject_path in linux_uprojects:
     uproject_name = os.path.basename(uproject_path).split('.')[0]
     uprojects.append(
         dict(
-            uproject_path = uproject_path,
-            ue4_path = ue4_linux,
-            log_file = 'log/linux_%s.log' % uproject_name
-        ),
+            uproject_path=uproject_path,
+            ue4_path=ue4_linux,
+            log_file=f'log/linux_{uproject_name}.log',
+        )
     )
 
 for uproject_path in mac_uprojects:
     uproject_name = os.path.basename(uproject_path).split('.')[0]
     uprojects.append(
         dict(
-            uproject_path = uproject_path,
-            ue4_path = ue4_mac,
-            log_file = 'log/mac_%s.log' % uproject_name
-        ),
+            uproject_path=uproject_path,
+            ue4_path=ue4_mac,
+            log_file=f'log/mac_{uproject_name}.log',
+        )
     )
 
 
@@ -68,7 +68,7 @@ if __name__ == '__main__':
     for uproject in uprojects:
         uproject_path = uproject['uproject_path']
         if not os.path.isfile(uproject_path):
-            print("Can not find uproject file %s, skip this project" % uproject_path)
+            print(f"Can not find uproject file {uproject_path}, skip this project")
             continue
 
         cmd = [

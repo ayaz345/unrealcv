@@ -37,11 +37,7 @@ def main():
 
     ue4 = UE4Automation(args.UE4)
 
-    if args.output:
-        output_folder = args.output
-    else:
-        output_folder = None
-
+    output_folder = args.output if args.output else None
     # Build the plugin
     descriptor_file = args.descriptor_file
     abs_descriptor_file = os.path.abspath(descriptor_file)
@@ -59,7 +55,7 @@ def main():
     elif descriptor_file.endswith('.uproject'):
         project_name = os.path.basename(descriptor_file).split('.')[0]
         if not output_folder:
-            output_folder = 'UE4Binaries/%s' % project_name
+            output_folder = f'UE4Binaries/{project_name}'
         abs_output_folder = os.path.abspath(output_folder)
 
         ue4.package(abs_descriptor_file, abs_output_folder)

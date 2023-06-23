@@ -15,7 +15,7 @@ class Vec3:
         return ' '.join([str(v) for v in self.vec])
 
     def l2norm(self):
-        return math.sqrt(sum([v*v for v in self.vec]))
+        return math.sqrt(sum(v*v for v in self.vec))
 
     def __sub__(self, v):
         return Vec3([a-b for (a,b) in zip(self.vec, v.vec)])
@@ -38,11 +38,11 @@ def test_camera_distance():
         assert checker.is_ok(res)
 
         for _ in range(5):
-            client.request('vset /camera/0/rotation %s' % str(random_vec3()))
+            client.request(f'vset /camera/0/rotation {str(random_vec3())}')
             actor_loc = Vec3(client.request('vget /actor/location'))
             loc1 = Vec3(client.request('vget /camera/0/location'))
             loc2 = Vec3(client.request('vget /camera/1/location'))
-            print('%s %s %s' % (actor_loc, loc1, loc2))
+            print(f'{actor_loc} {loc1} {loc2}')
 
             actual_dist = (loc1 - loc2).l2norm()
             expect_dist = test_distance

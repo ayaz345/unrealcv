@@ -36,13 +36,11 @@ class Camera:
 
     def capture_depth(self):
         res = self.client.request('vget /camera/{id}/depth npy'.format(id = self.id))
-        depth = read_npy(res)
-        return depth
+        return read_npy(res)
 
     def capture_img(self):
         res = self.client.request('vget /camera/{id}/lit png'.format(id = self.id))
-        img = read_png(res)
-        return img
+        return read_png(res)
 
 def main():
     binary_path = r'C:\qiuwch\workspace\unrealcv\Binaries\RealisticRendering.uproject\WindowsNoEditor\RealisticRendering.exe'

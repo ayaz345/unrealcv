@@ -9,11 +9,11 @@ if __name__ == '__main__':
         filename = '{id}-{platform}-{version}.zip'.format(id = binary_id, platform = platform, version = version)
         url = 'http://www.cs.jhu.edu/~qiuwch/release/unrealcv/{filename}'.format(filename = filename)
         if not os.path.isfile(filename):
-            print('Download from %s to %s' % (url, filename))
+            print(f'Download from {url} to {filename}')
             # subprocess.call(['wget', '-c', url])
             try:
                 urlretrieve(url, filename)
             except:
-                print('Fail to download %s' % url)
+                print(f'Fail to download {url}')
         else:
-            print('Ignore downloaded file %s' % filename)
+            print(f'Ignore downloaded file {filename}')

@@ -5,7 +5,7 @@ import os, zipfile
 def zip_dir(dirpath, zippath):
     # fzip = zipfile.ZipFile(zippath, 'w', zipfile.ZIP_DEFLATED, allowZip64 = True)
     fzip = zipfile.ZipFile(zippath, 'w', zipfile.ZIP_STORED, allowZip64 = True)
-    basedir = os.path.dirname(dirpath) + '/'
+    basedir = f'{os.path.dirname(dirpath)}/'
     for root, dirs, files in os.walk(dirpath):
         if os.path.basename(root)[0] == '.':
             continue #skip hidden directories
@@ -14,7 +14,7 @@ def zip_dir(dirpath, zippath):
             # if f[-1] == '~' or (f[0] == '.' and f != '.htaccess'):
             #     #skip backup files and all hidden files except .htaccess
             #     continue
-            fzip.write(root + '/' + f, dirname + '/' + f)
+            fzip.write(f'{root}/{f}', f'{dirname}/{f}')
     fzip.close()
 
 if __name__ == '__main__':
@@ -25,8 +25,8 @@ if __name__ == '__main__':
         binary_folder = os.path.join('Binaries', uproject_name)
 
         if not os.path.isdir(binary_folder):
-            print('Binary folder %s not exist, skip this one' % binary_folder)
+            print(f'Binary folder {binary_folder} not exist, skip this one')
             continue
 
-        print('Zipping %s ...' % uproject_name)
-        zip_dir(binary_folder, '%s_%s_%s.zip' % (uproject_name, platform_name, plugin_version))
+        print(f'Zipping {uproject_name} ...')
+        zip_dir(binary_folder, f'{uproject_name}_{platform_name}_{plugin_version}.zip')

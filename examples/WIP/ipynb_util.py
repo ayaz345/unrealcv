@@ -16,12 +16,10 @@ class Timer(object):
 
 def plot_object_color(object_list, color_mapping):
     N = len(object_list)
-    object_id = 1
-    for object_name in object_list:
+    for object_id, object_name in enumerate(object_list, start=1):
         color = color_mapping[object_name]
         plt.subplot(1,N,object_id)
         plot_color(color, object_name)
-        object_id += 1
 
 def generate_objectcatetory_json(scene_objects):
     # Use http://www.jsoneditoronline.org/ to clean the json

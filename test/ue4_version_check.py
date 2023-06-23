@@ -2,7 +2,7 @@
 import subprocess, os, sys
 
 def format_cmd(UE4, output_folder):
-    cmd = [
+    return [
         'python',
         'build.py',
         '--UE4',
@@ -10,7 +10,6 @@ def format_cmd(UE4, output_folder):
         '--output',
         output_folder,
     ]
-    return cmd
 
 UE414 = [r'C:\Program Files\Epic Games\UE_4.14', r'C:/temp/unrealcv_built/414', 'log/UE414.log']
 UE416 = [r'C:\Program Files\Epic Games\UE_4.16', r'C:/temp/unrealcv_built/416', 'log/UE416.log']

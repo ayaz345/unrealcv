@@ -20,10 +20,10 @@ class Logger:
         self.log_file.writelines(str(text))
 
     def request(self, cmd, log = True):
-        self.writelines('Request: ' + cmd + '\n')
+        self.writelines(f'Request: {cmd}' + '\n')
         res = client.request(cmd)
         if log:
-            self.writelines('Response: ' + str(res) + '\n')
+            self.writelines(f'Response: {str(res)}' + '\n')
         # Trancate too long value
         return res
 
@@ -33,8 +33,7 @@ class Logger:
         imageio.imwrite(abs_filename, img)
 
 def normalize(src):
-    normalized = (src.astype('float') - src.min()) / (src.max() - src.min())
-    return normalized
+    return (src.astype('float') - src.min()) / (src.max() - src.min())
 
 def run_commands_demo(logger):
     time.sleep(10)
@@ -95,18 +94,14 @@ def main():
     else:
         binary_name = 'editor'
 
-    if args.output_folder:
-        output_folder = args.output_folder
-    else:
-        output_folder = binary_name
-
+    output_folder = args.output_folder if args.output_folder else binary_name
     if os.path.isdir(output_folder):
-        print('Output folder "%s" already exists' % output_folder)
+        print(f'Output folder "{output_folder}" already exists')
         return
 
     log_filename = os.path.join(output_folder, 'output.txt')
     logger = Logger(client, log_filename, output_folder)
-    logger.writelines('Test binary %s' % binary_path)
+    logger.writelines(f'Test binary {binary_path}')
 
     if binary: # Binary mode
         with binary:
@@ -119,9 +114,8 @@ def main():
             if logger.client.connect():
                 run_commands_demo(logger)
 
-    else: # Editor mode
-        if logger.client.connect():
-            run_commands_demo(logger)
+    elif logger.client.connect():
+        run_commands_demo(logger)
 
 
 if __name__ == '__main__':

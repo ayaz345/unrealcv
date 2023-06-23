@@ -46,7 +46,7 @@ class ThreadedServer(SocketServer.ThreadingTCPServer, object):
 
         def _():
             cur_thread = threading.current_thread()
-            logger.info('Started in thread %s' % cur_thread.name)
+            logger.info(f'Started in thread {cur_thread.name}')
 
             self.serve_forever() # Copy from the definition from serve_forever
 
@@ -120,7 +120,7 @@ class ThreadedServer(SocketServer.ThreadingTCPServer, object):
     def verify_request(self, request, client_address):
         # The socket has been accepted, but might be closed in here.
         # Reject if we already has a connection
-        logger.debug('Got a connection from %s' % str(client_address))
+        logger.debug(f'Got a connection from {str(client_address)}')
         if self._client_socket:
             logger.debug('Reject, only accept one connection')
             accepted = False
@@ -169,10 +169,10 @@ class EchoTCPHandler(SocketServer.BaseRequestHandler):
     def handle(self):
         # self.request is the TCP socket connected to the client
         while 1: # Need a way to stop the server
-            data = self.request.recv(1024)  # Return whatever it gets
-            if not data: # The connection is lost
+            if data := self.request.recv(1024):
+                self.request.sendall(data)
+            else:
                 break
-            self.request.sendall(data)
 
 class EchoServer(ThreadedServer):
     ''' Everything will be sent back '''
@@ -191,9 +191,7 @@ class MessageTCPHandler(SocketServer.BaseRequestHandler):
             try:
                 logger.debug('Start to handle message')
                 self.server.message_handled.clear()
-                message = unrealcv.SocketMessage.ReceivePayload(self.request)
-
-                if message:
+                if message := unrealcv.SocketMessage.ReceivePayload(self.request):
                     unrealcv.SocketMessage.WrapAndSendPayload(self.request, message)
                     self.server.message_handled.set()
                 else:
@@ -206,10 +204,10 @@ class MessageTCPHandler(SocketServer.BaseRequestHandler):
                 if e.errno == 10054:
                     logger.debug('Remote connection is forcibly closed')
                     self.server._client_socket = None
-                    self.server.message_handled.set()
                 else:
-                    logger.debug('Unknown exception %s' % str(e))
-                    self.server.message_handled.set()
+                    logger.debug(f'Unknown exception {str(e)}')
+
+                self.server.message_handled.set()
 
 
 class MessageServer(ThreadedServer):

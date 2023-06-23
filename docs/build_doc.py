@@ -81,7 +81,7 @@ def main():
 
     index_file = os.path.join(output_folder, 'index.html')
     print('Open compiled html in the browser')
-    webbrowser.open_new('file://' + os.path.realpath(index_file))
+    webbrowser.open_new(f'file://{os.path.realpath(index_file)}')
 
 if __name__ == '__main__':
     main()
